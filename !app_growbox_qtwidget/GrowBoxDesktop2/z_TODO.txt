@@ -1,0 +1,16 @@
+w desktop:
+zrobic wiecej dzwiekow obsluge o nowe dzwieki
+dodac checkbox w karcie sounds multiple sounds (czyli 3 pliki naraz, wtedy odpalenie nowego dzwieku powoduje ze stary dalej leci i mozna odtworzyc do 3 dzwiekow naraz, kazde klikniecie nim skonczy sie poprzedni dodaje do kolejki tych trzech co sa odpalone, odpal tylko 3 najnowsze, kazde kolejne klikniecia przepelniajace kolejke kasuje odtwarzanie ostatniego dzwieku)
+
+przy jego odznaczeniu jest tak ze jak sie wlaczy jakis dzwiek to anuluje odrazu dotychczasowy dzwiek i odtwarza nowy wybrany
+
+
+
+w projekcie driver:
+
+wdrozyc obsluge tych trybow co dodane do desktopa czyli mniej wiecej:
+
+naprawic puszczanie dzwiekow tj zeby dalo sie puscic kilka naraz (do 3 kanalow) lub zeby odpalenie nowego dzwieku wylaczalo poprzedni i odrazu wlaczalo nowy (na 1 kanale)
+
+
+poprawic obsluge glosnosci bo cos nie dziala, mozna sobie zmieniac ze strony i nic sie nie zmienia ciagle pliki ida jedna glosnoscia, zrobmy testy napisz jakimi komendami sprawdzac czy poziom glosnosci sie zrobil, dodaj logi do tego i sprawdzmy czy aplikacja ma uprawnienia i ew dodamy,

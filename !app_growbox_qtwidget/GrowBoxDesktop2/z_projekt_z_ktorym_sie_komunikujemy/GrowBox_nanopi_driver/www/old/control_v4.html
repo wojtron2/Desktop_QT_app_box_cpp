@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Growbox Control v4</title>
+  <link rel="stylesheet" href="control_v4.css">
+</head>
+<body>
+
+  <div class="box">
+    <header class="header">
+      <h1>Growbox Control v4</h1>
+      <div class="top-actions">
+        <button id="btnRefreshAll" class="btn btn-primary">Odswiez wszystko</button>
+        <button id="btnClearLog" class="btn">Wyczysc log</button>
+      </div>
+    </header>
+
+    <section class="section">
+      <h2>Status</h2>
+      <div class="row">
+        <button id="btnGetStatus" class="btn btn-primary">GET /api/status</button>
+        <span id="statusHint" class="hint">Pobiera caly snapshot (outputs + sound).</span>
+      </div>
+      <pre id="statusOut" class="pre"></pre>
+    </section>
+
+    <section class="section">
+      <h2>System</h2>
+      <div class="grid2">
+        <div class="card">
+          <h3>Global Auto Mode</h3>
+          <div class="row">
+            <button id="btnAutoOn" class="btn btn-green">/api/system/auto/on</button>
+            <button id="btnAutoOff" class="btn btn-red">/api/system/auto/off</button>
+          </div>
+          <div class="row">
+            <span class="hint">Wplywa na dzialanie automatyki czasowej.</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Log odpowiedzi</h3>
+          <div class="row">
+            <span class="hint">Klikasz -> widzisz JSON i endpoint w logu nizej.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Outputs (1..16)</h2>
+      <div id="outputsRoot" class="stack"></div>
+    </section>
+
+    <section class="section">
+      <h2>Sound</h2>
+
+      <div class="grid2">
+        <div class="card">
+          <h3>Global Volume</h3>
+          <div class="row">
+            <button id="btnVolGet" class="btn">GET /api/sound/volume/get</button>
+          </div>
+          <div class="row">
+            <label class="lbl">value (0..100)</label>
+            <input id="inpVolSet" class="inp" type="number" min="0" max="100" value="100">
+            <button id="btnVolSet" class="btn btn-primary">SET</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Play now</h3>
+          <div class="row">
+            <label class="lbl">file</label>
+            <input id="inpPlayFile" class="inp" type="text" value="alarm.mp3" placeholder="np. alarm.mp3">
+          </div>
+          <div class="row">
+            <label class="lbl">volume (0..100)</label>
+            <input id="inpPlayVol" class="inp" type="number" min="0" max="100" value="70">
+          </div>
+          <div class="row">
+            <button id="btnPlay" class="btn btn-primary">/api/sound/play</button>
+            <button id="btnPlayCurrent" class="btn">/api/sound/play_current</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <button id="btnSoundStatus" class="btn">GET /api/sound/status</button>
+        <span class="hint">Zwraca globalSoundVolume + soundAlarms[]</span>
+      </div>
+
+      <h3 class="subh">Sound alarms (1..10)</h3>
+      <div id="soundRoot" class="stack"></div>
+    </section>
+
+    <section class="section">
+      <h2>Log</h2>
+      <pre id="logOut" class="pre pre-log"></pre>
+    </section>
+  </div>
+
+  <script src="control_v4.js"></script>
+</body>
+</html>

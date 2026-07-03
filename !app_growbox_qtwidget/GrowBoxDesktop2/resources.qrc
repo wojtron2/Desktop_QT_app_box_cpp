@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/new">
+        <file>img/forest2.jpg</file>
+        <file>img/plant_icon.png</file>
+        <file>img/fern.jpg</file>
+    </qresource>
+</RCC>

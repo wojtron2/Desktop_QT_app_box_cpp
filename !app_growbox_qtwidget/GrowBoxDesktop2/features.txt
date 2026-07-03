@@ -1,0 +1,18 @@
+add logging, clear log
+todo auto scroll log
+
+set icon
+
+add info image
+add status image
+
+settings save and load
+
+set port
+
+versioning with const
+
+
+dobra, a teraz dlaczego port mi nie dziala, jak klikne pole to nie da sie wpisac portu
+
+i druga rzecz, jak ustawic standardowe, defaultowe wartosci dla pola IP oraz PORT

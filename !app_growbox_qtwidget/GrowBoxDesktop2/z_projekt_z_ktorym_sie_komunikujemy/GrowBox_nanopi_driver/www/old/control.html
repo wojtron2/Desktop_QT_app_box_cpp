@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Growbox Control Panel</title>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: #111;
+    color: #eee;
+    margin: 20px;
+}
+
+h1 {
+    margin-bottom: 10px;
+}
+
+button {
+    padding: 5px 10px;
+    margin: 2px;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.on { background: #2ecc71; }
+.off { background: #e74c3c; }
+.manual { background: #f39c12; }
+.auto { background: #3498db; }
+
+.card {
+    border: 1px solid #444;
+    padding: 10px;
+    margin: 8px 0;
+    border-radius: 6px;
+}
+
+.output-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+input[type="number"] {
+    width: 60px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Growbox Control</h1>
+
+<div>
+    <button class="auto" onclick="setGlobalAuto(true)">Global AUTO ON</button>
+    <button class="manual" onclick="setGlobalAuto(false)">Global AUTO OFF</button>
+    <span id="globalStatus"></span>
+</div>
+
+<hr>
+
+<div class="output-grid" id="outputs"></div>
+
+<script>
+
+async function apiCall(url) {
+    const res = await fetch(url);
+    return await res.json();
+}
+
+async function refresh() {
+    const data = await apiCall("/api/status");
+
+    document.getElementById("globalStatus").innerText =
+        "Global AUTO: " + (data.globalAutoMode ? "ON" : "OFF");
+
+    const container = document.getElementById("outputs");
+    container.innerHTML = "";
+
+    data.outputs.forEach(o => {
+
+        const div = document.createElement("div");
+        div.className = "card";
+
+        div.innerHTML = `
+            <h3>Output ${o.id}</h3>
+            <div>State: <b>${o.state ? "ON" : "OFF"}</b></div>
+            <div>ManualMode: <b>${o.manualMode ? "ON" : "OFF"}</b></div>
+            <div>Auto ON: ${o.autoOnHour}</div>
+            <div>Auto OFF: ${o.autoOffHour}</div>
+
+            <div>
+                <button class="on" onclick="setOn(${o.id})">ON</button>
+                <button class="off" onclick="setOff(${o.id})">OFF</button>
+            </div>
+
+            <div>
+                <button class="manual" onclick="setManual(${o.id}, true)">Manual ON</button>
+                <button class="auto" onclick="setManual(${o.id}, false)">Manual OFF</button>
+            </div>
+
+            <div>
+                <input type="number" min="0" max="23" id="on${o.id}" placeholder="ON hour">
+                <button onclick="setAutoOn(${o.id})">Set ON</button>
+            </div>
+
+            <div>
+                <input type="number" min="0" max="23" id="off${o.id}" placeholder="OFF hour">
+                <button onclick="setAutoOff(${o.id})">Set OFF</button>
+            </div>
+        `;
+
+        container.appendChild(div);
+    });
+}
+
+function setOn(id) {
+    apiCall(`/api/output/${id}/on`).then(refresh);
+}
+
+function setOff(id) {
+    apiCall(`/api/output/${id}/off`).then(refresh);
+}
+
+function setManual(id, enabled) {
+    const mode = enabled ? "on" : "off";
+    apiCall(`/api/output/${id}/manual/${mode}`).then(refresh);
+}
+
+function setAutoOn(id) {
+    const hour = document.getElementById("on"+id).value;
+    apiCall(`/api/output/${id}/autoon?hour=${hour}`).then(refresh);
+}
+
+function setAutoOff(id) {
+    const hour = document.getElementById("off"+id).value;
+    apiCall(`/api/output/${id}/autooff?hour=${hour}`).then(refresh);
+}
+
+function setGlobalAuto(enabled) {
+    const mode = enabled ? "on" : "off";
+    apiCall(`/api/system/auto/${mode}`).then(refresh);
+}
+
+refresh();
+setInterval(refresh, 5000);
+
+</script>
+
+</body>
+</html>
